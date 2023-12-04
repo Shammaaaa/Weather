@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Погодное приложение</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
+        <span class="fs-4">My project</span>
+    </a>
+</div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-5 offset-1">
+                <h1>Погода в вашем городе</h1>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <label for="city"></label>
+                    {{ form.name }}
+                    <input type="submit" name="send" value="Добавить" class="mt-2 btn btn-success">
+                    {% if message %}
+                        <div class="notification {{ message_class }}">{{ message }}</div>
+                    {% endif %}
+                </form>
+            </div>
+            <div class="col-4 offset-1">
+                <h1>Информация</h1>
+                {% for city_weather in weather_data %}
+
+
+
+
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-6">
+                                <b>Город: </b>{{ city_weather.city }}<br>
+                                <b>Температура: </b>{{ city_weather.temp }}<sup>o</sup><br>
+                                <b>Описание: </b>{{ city_weather.description }}<br>
+                            </div>
+                            <div class="col-4 offset-9">
+                                <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Фото погоды"
+                                     class="img-thumbnail" width="80" height="80">
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <a href="{% url 'delete_city' city_weather.city %}">
+                                <button class="delete"></button>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
